@@ -7,11 +7,22 @@ YOLO를 활용한 위험물 감지 서비스
 ## 환경 설정
 
 최초 환경설정 시:
+- `set.bat` 파일을 이용하는 방법
 ```bash
-conda env create -f environment.yml
-conda activate py39_yolo_danger
-conda env export --from-history > environment.yml
-# pip install -r requirements.txt 명령어와 유사하나, CUDA 정보가 포함되어 있음
+setup.bat
+```
+- 직접 설치
+1. CUDA
+```bash
+pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu118
+```
+2. Ultralytics
+```bash
+pip install ultralytics
+```
+3. 기타 패키지
+```bash
+pip install -r requirements-no-torch.txt
 ```
 
 
