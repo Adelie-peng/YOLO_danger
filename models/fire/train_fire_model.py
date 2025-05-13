@@ -5,7 +5,7 @@ from pathlib import Path
 def train_fire_detection_model(
     epochs: int = 100,
     img_size: int = 640,
-    batch_size: int = 16,
+    batch_size: int = 8,  # 16 -> 8
     dataset_dir: str = 'datasets/fire'
 ) -> None:
 
@@ -13,8 +13,8 @@ def train_fire_detection_model(
     dataset_path = Path(dataset_dir)
     yaml_path = dataset_path / "data.yaml"
     
-    # 모델 생성 - YOLOv8n
-    model = YOLO('yolov8n.pt')  # 다른 경량화 버전 참고: yolov8s.pt, yolov8m.pt
+    # 모델 생성 - YOLOv8n -> YOLOv8s
+    model = YOLO('yolov8s.pt')  # 다른 경량화 버전 참고: yolov8s.pt, yolov8m.pt
 
     # 파라미터를 구성
     train_args = {
@@ -23,7 +23,7 @@ def train_fire_detection_model(
         'imgsz': img_size,
         'batch': batch_size,
         'device': 0,
-        'name': 'fire_detection_model',
+        'name': 'fire_detection_model_s',
         'patience': 20,
         'pretrained': True,
         'save': True,
