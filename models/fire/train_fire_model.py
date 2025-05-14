@@ -28,7 +28,9 @@ def train_fire_detection_model(
         'pretrained': True,
         'save': True,
         'save_period': 10,
-        'single_cls': False  # 화재, 연기 클래스 감지
+        'single_cls': False,  # 화재, 연기 클래스 감지
+        'workers': 8,  # 데이터 로딩 워커 수 증가
+        'cache': True,  # 데이터 캐싱 활성화
     }
 
     # 학습 실행
