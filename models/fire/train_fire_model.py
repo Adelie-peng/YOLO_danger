@@ -1,36 +1,41 @@
-from ultralytics import YOLO
-from multiprocessing import freeze_support
 from pathlib import Path
+from multiprocessing import freeze_support
+from ultralytics import YOLO
 
 def train_fire_detection_model(
     epochs: int = 100,
     img_size: int = 640,
-    batch_size: int = 8,  # 16 -> 8
-    dataset_dir: str = 'datasets/fire'
+    batch_size: int = 8,
+    dataset_dir: str = 'datasets/fire',
+    model_name: str = 'fire_detection_model_s',
 ) -> None:
 
    # 경로 설정
     dataset_path = Path(dataset_dir)
     yaml_path = dataset_path / "data.yaml"
     
-    # 모델 생성 - YOLOv8n -> YOLOv8s
-    model = YOLO('yolov8s.pt')  # 다른 경량화 버전 참고: yolov8s.pt, yolov8m.pt
+    # 모델 생성 - YOLOv8s
+    model = YOLO('yolov8s.pt')
 
-    # 파라미터를 구성
+    # 학습 파라미터 구성
     train_args = {
         'data': str(yaml_path),
-        'epochs': epochs,
         'imgsz': img_size,
+
+        'epochs': epochs,
         'batch': batch_size,
-        'device': 0,
-        'name': 'fire_detection_model_s',
+        'workers': 8,
+        'cache': True,
         'patience': 20,
+
         'pretrained': True,
+        'single_cls': False,  # 화재, 연기 클래스 감지
+
+        'name': model_name,
         'save': True,
         'save_period': 10,
-        'single_cls': False,  # 화재, 연기 클래스 감지
-        'workers': 8,  # 데이터 로딩 워커 수 증가
-        'cache': True,  # 데이터 캐싱 활성화
+
+        'device': 0,
     }
 
     # 학습 실행
